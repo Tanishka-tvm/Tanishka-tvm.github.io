@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello ToJe - Jerry</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @font-face {
+            font-family: 'Shermlock';
+            src: url('Shermlock.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'ShermlockOpen';
+            src: url('ShermlockOpen.ttf') format('truetype');
+        }
+    </style>
+</head>
+<body class="jerry-page" background="public/jerry-bg.svg">
+    <header>
+        <div class="header-container">
+            <!-- Character Selection Button inside the left icon -->
+            <a href="#" onclick="openCharacterSelection()">
+                <img src="public/logo.png" alt="Character Switch" class="icon">
+            </a>
+            <div class="chatbot-name">
+                <h1>
+                    <span style="font-family: 'ShermlockOpen';">Jerry</span>
+                </h1>
+            </div>
+            <a href="user-profile-icon.html"><img src="public/user-profile-icon.jpg" alt="User Profile" class="icon"></a>
+        </div>
+    </header>
+    
+
+    <div class="chat-container">
+        <div class="messages" id="messages"></div>
+        <div class="input-container">
+            <textarea id="message-input" placeholder="Type your message..."></textarea>
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <div id="characterModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeCharacterSelection()">&times;</span>
+            <h2>Select Your Character</h2>
+            <div class="character-options">
+                <button class="character-btn" onclick="selectCharacter('Tom')">Tom</button>
+                <button class="character-btn" onclick="selectCharacter('Jerry')">Jerry</button>
+                <button class="character-btn" onclick="selectCharacter('ToJe')">
+                    <span style="font-family: 'ShermlockOpen';">Hello </span>
+                    <span style="font-family: 'Shermlock'; color: #2e1dcc;">T</span>
+                    <span style="font-family: 'ShermlockOpen';">o</span>
+                    <span style="font-family: 'Shermlock'; color: #864e0d;">J</span>
+                    <span style="font-family: 'ShermlockOpen';">e!</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

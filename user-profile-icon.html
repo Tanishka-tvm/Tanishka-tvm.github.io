@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ed9898;
+        }
+
+        .profile-container {
+            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .avatar:hover {
+            border-color: #007bff;
+        }
+
+        .avatar.selected {
+            border-color: #2e1dcc;
+        }
+
+        .form-container {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1 id="headerText">Select Your Avatar</h1>
+        <div class="avatar-grid">
+            <img src="public\avatar1.png" alt="Avatar 1" class="avatar" onclick="selectAvatar(this, 1)">
+            <img src="public\avatar2.png" alt="Avatar 2" class="avatar" onclick="selectAvatar(this, 2)">
+            <img src="public/avatar3.png" alt="Avatar 3" class="avatar" onclick="selectAvatar(this, 3)">
+            <img src="public/avatar4.png" alt="Avatar 4" class="avatar" onclick="selectAvatar(this, 4)">
+            <img src="public/avatar5.png" alt="Avatar 5" class="avatar" onclick="selectAvatar(this, 5)">
+            <img src="public/avatar6.png" alt="Avatar 6" class="avatar" onclick="selectAvatar(this, 6)">
+            <img src="public/avatar7.png" alt="Avatar 7" class="avatar" onclick="selectAvatar(this, 7)">
+            <img src="public/avatar8.png" alt="Avatar 8" class="avatar" onclick="selectAvatar(this, 8)">
+            <img src="public/avatar9.png" alt="Avatar 9" class="avatar" onclick="selectAvatar(this, 9)">
+        </div>
+        <button id="nextButton" onclick="proceedToForm()">Next</button>
+        <div class="form-container" id="formContainer">
+            <h1>Create Your Profile</h1>
+            <input type="text" id="nickname" placeholder="Enter your nickname" required>
+            <input type="number" id="age" placeholder="Enter your age" required>
+            <button onclick="submitProfile()">Submit</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        // Supabase Initialization
+        const supabaseUrl = 'https://xnjnhsdcwvzojaaqbmgj.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhuam5oc2Rjd3Z6b2phYXFibWdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM1ODA5NzYsImV4cCI6MjA0OTE1Njk3Nn0.iII5yXh36T-ywO2rTJ7U0BErrnYEbaxk1PwPA-d1d9M';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);</script>
+
+        
+    <script>
+        // Avatar Selection
+        function selectAvatar(element, avatarId) {
+            const avatars = document.querySelectorAll('.avatar');
+            avatars.forEach(avatar => avatar.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAvatar = avatarId;
+        }
+
+        // Proceed to Profile Form
+        function proceedToForm() {
+            if (!selectedAvatar) {
+                alert('Please select an avatar before proceeding.');
+                return;
+            }
+            document.querySelector('.avatar-grid').style.display = 'none';
+            document.getElementById('nextButton').style.display = 'none';
+            document.getElementById('headerText').textContent = 'Create Your Profile';
+            document.getElementById('formContainer').style.display = 'flex';
+        }
+
+        // Submit Profile
+        async function submitProfile() {
+            const nickname = document.getElementById('nickname').value.trim();
+            const age = document.getElementById('age').value.trim();
+
+            if (!nickname || !age) {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            const { data, error } = await supabase
+                .from('users')
+                .insert([{ avatar: selectedAvatar, nickname, age }]);
+
+            if (error) {
+                console.error('Error:', error.message);
+                alert('Failed to save profile. Please try again.');
+            } else {
+                alert('Profile created successfully!');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
